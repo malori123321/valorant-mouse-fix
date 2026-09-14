@@ -13,7 +13,8 @@ I can't fully explain the exact mechanism (this registry key is generally consid
 
 I started by checking `GameUserSettings.ini` to see which monitor Valorant was actually targeting.
 
-![Checking the path to see if anything unusual](image1.png)
+<img width="1130" height="200" alt="image" src="https://github.com/user-attachments/assets/f722687d-cb93-4580-8726-89b9df54ae12" />
+
 
 ```ini
 [/Script/ShooterGame.ShooterGameUserSettings]
@@ -37,7 +38,8 @@ Opening that exact path in Regedit:
 HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Class\{4d36e96e-e325-11ce-bfc1-08002be10318}\0002
 ```
 
-![Seeing something interesting even though max resolution for my laptop is 1920x1080 it is shown 1600x1200](image2.png)
+<img width="1115" height="377" alt="image" src="https://github.com/user-attachments/assets/623f76f9-9fc3-4e97-b25a-000764522ebe" />
+
 
 Even though my laptop's real native resolution is **1920x1080**, this entry listed:
 
@@ -49,7 +51,8 @@ MatchingDeviceId: *PNP09FF
 
 Same stale value shows up one level down, under `Configuration\Driver`:
 
-![Same 1600,1200 value under Configuration\Driver](image3.png)
+<img width="1080" height="379" alt="image" src="https://github.com/user-attachments/assets/fb3a6e69-ef2c-47cf-8722-f41ae0aabfe1" />
+
 
 ```
 $!MaxResolution: 1600,1200
@@ -61,9 +64,11 @@ $!MaxResolution: 1600,1200
 
 I edited both `MaxResolution` values (under the `0002` key directly, and under `0002\Configuration\Driver`) to match my panel's real native resolution:
 
-![The fix — MODES folder now shows 1920,1080 and MaxResolution updated](image4.png)
+<img width="1102" height="558" alt="image" src="https://github.com/user-attachments/assets/ddac39a7-3200-40fd-ad4f-564d2f0d619f" />
 
-![Configuration\Driver also updated to 1920,1080](image5.png)
+
+<img width="1070" height="558" alt="image" src="https://github.com/user-attachments/assets/82fafe27-8d08-4ec5-966e-1170c601a8c6" />
+
 
 ```
 MaxResolution:   1920,1080
