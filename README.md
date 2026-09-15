@@ -76,11 +76,37 @@ $!MaxResolution: 1920,1080
 ```
 
 (If your native resolution is different, e.g. 2560x1440 or 3840x2160, use *your* actual resolution here, not mine.)
-
+ 
+**Update:** there's a third spot people following this manually tend to miss — under the `0002` key there's also a `MODES` subkey containing a *registry key* literally named after the stale resolution (e.g. a key named `1600,1200`). This isn't a value you can edit in place; you have to **rename the key itself** (right-click → Rename in Regedit) to match your real resolution. The automated script below handles this step too.
+ 
 ## 4. Result
 
 After a full restart, the uncontrolled/hard-to-track mouse feeling in Valorant was gone. I wouldn't describe it as "floaty" got fixed — it's more that the mouse now feels the way it's supposed to feel by default, like the game was just running off bad monitor data before and this corrected that baseline rather than removing some separate floaty effect layered on top.
 
+---
+
+## 5. Automating the fix
+ 
+Doing this by hand in Regedit works, but it's easy to typo a value or edit the wrong instance number. I wrote a small PowerShell script (`Fix-ValorantMonitorResolution.ps1`, included in this repo) that does it safely:
+ 
+- Finds your `GameUserSettings.ini` automatically (or lets you paste the path)
+- Parses `DefaultMonitorDeviceID` itself, so it targets **your** correct GUID/instance instead of mine
+- Detects your actual current resolution
+- Only touches the registry if there's a real mismatch
+- Also renames the `MODES\<old-resolution>` registry **key** to match your real resolution (this is a key name, not a value, so it can't be fixed with a simple value edit)
+- **Backs up both keys to your Desktop as `.reg` files before changing anything**
+- Asks for confirmation before writing
+Usage:
+ 
+**Easiest way — use the included `.bat` launcher:**
+1. Make sure `RunFix.bat` and `Fix-ValorantMonitorResolution.ps1` are in the **same folder**
+2. Double-click `RunFix.bat`
+3. Click **Yes** on the UAC prompt — it relaunches itself elevated automatically
+4. The script runs in a console window; follow the prompts
+(`.ps1` files often default to opening in a text editor when double-clicked instead of running, which is why the `.bat` wrapper is the more reliable entry point. If you prefer running it directly from an already-elevated PowerShell window, `.\Fix-ValorantMonitorResolution.ps1` still works too — it has its own self-elevation built in as a fallback.)
+ 
+If it ever misbehaves, double-click the exported `.reg` backup file in the generated `monitor_registry_backup_...` folder on your Desktop to restore the original values.
+ 
 ---
 
 ## Caveats / honesty section
